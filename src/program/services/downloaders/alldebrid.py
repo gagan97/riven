@@ -127,7 +127,7 @@ class AllDebridDownloader(DownloaderBase):
 
         try:
             params = {f"magnets[{i}]": infohash for i, infohash in enumerate(infohashes)}
-            response = self.api.request_handler.execute(HttpMethod.GET, "magnet/instant", **params)
+            response = self.api.request_handler.execute(HttpMethod.GET, "magnet/instant", params=params)
             magnets = response.get("magnets", [])
 
             availability = {}
@@ -183,7 +183,7 @@ class AllDebridDownloader(DownloaderBase):
             response = self.api.request_handler.execute(
                 HttpMethod.GET,
                 "magnet/upload",
-                **{"magnets[]": infohash}
+                params={"magnets[]": infohash}
             )
             magnet_info = response.get("magnets", [])[0]
             torrent_id = magnet_info.get("id")
@@ -222,7 +222,7 @@ class AllDebridDownloader(DownloaderBase):
             raise AllDebridError("Downloader not properly initialized")
 
         try:
-            response = self.api.request_handler.execute(HttpMethod.GET, "magnet/status", id=torrent_id)
+            response = self.api.request_handler.execute(HttpMethod.GET, "magnet/status", params={"id": torrent_id})
             info = response.get("magnets", {})
             if "filename" not in info:
                 raise AllDebridError("Invalid torrent info response")
@@ -240,7 +240,7 @@ class AllDebridDownloader(DownloaderBase):
             raise AllDebridError("Downloader not properly initialized")
 
         try:
-            self.api.request_handler.execute(HttpMethod.GET, "magnet/delete", id=torrent_id)
+            self.api.request_handler.execute(HttpMethod.GET, "magnet/delete", params={"id": torrent_id})
         except Exception as e:
             logger.error(f"Failed to delete torrent {torrent_id}: {e}")
             raise
