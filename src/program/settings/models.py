@@ -272,7 +272,7 @@ class ScraperModel(Observable):
     after_10: int = 24
     parse_debug: bool = False
     enable_aliases: bool = True
-    bucket_limit: int = Field(default=5, ge=0, le=20)
+    bucket_limit: int = Field(default=5, ge=0, le=50)
     torrentio: TorrentioConfig = TorrentioConfig()
     knightcrawler: KnightcrawlerConfig = KnightcrawlerConfig()
     jackett: JackettConfig = JackettConfig()

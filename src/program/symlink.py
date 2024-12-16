@@ -295,6 +295,7 @@ def _delete_symlink(item: Union[Movie, Show], item_path: Path) -> bool:
 
 def _get_item_path(item: Union[Movie, Episode]) -> Optional[Path]:
     """Quickly check if the file exists in the rclone path."""
+    logger.debug(f"checking if file exists before symlink creation for file {item.file}  under folder {item.folder} or {item.alternative_folder} for {item.log_string}")
     if not item.file:
         return None
 
@@ -306,13 +307,16 @@ def _get_item_path(item: Union[Movie, Episode]) -> Optional[Path]:
         possible_folders_without_duplicates.append(new_possible_folder)
 
     for folder in possible_folders_without_duplicates:
+        logger.debug(f"checking folder {folder} for {item.log_string}")
         if folder:
             file_path = rclone_path / folder / item.file
+            logger.debug(f"checking path {file_path} for {item.log_string}")
             if file_path.exists():
                 return file_path
 
     # Not in a folder? Perhaps it's just sitting in the root.
     file = rclone_path / item.file
+    logger.debug(f"checking in rclone root for path {file} for {item.log_string}")
     if file.exists() and file.is_file():
         return file
     return None
