@@ -76,6 +76,7 @@ class SymlinkModel(Observable):
     separate_anime_dirs: bool = False
     repair_symlinks: bool = False
     repair_interval: float = 6 # hours
+    symlink_retries: int = Field(default=6, ge=0, le=50)
 
 
 # Content Services

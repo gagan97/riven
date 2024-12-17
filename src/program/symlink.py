@@ -27,6 +27,7 @@ class Symlinker:
         self.key = "symlink"
         self.settings = settings_manager.settings.symlink
         self.rclone_path = self.settings.rclone_path
+        self.symlink_retries = self.settings.symlink_retries
         self.initialized = self.validate()
         if not self.initialized:
             return
@@ -88,7 +89,7 @@ class Symlinker:
         """Check if the media item exists and create a symlink if it does"""
         items = self._get_items_to_update(item)
         if not self._should_submit(items):
-            if item.symlinked_times == 6:
+            if item.symlinked_times == self.symlink_retries:
                 logger.debug(f"Soft resetting {item.log_string} because required files were not found")
                 item.blacklist_active_stream()
                 item.reset()
