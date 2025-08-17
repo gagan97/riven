@@ -80,7 +80,8 @@ class SymlinkModel(Observable):
     library_path: Path = Path()
     separate_anime_dirs: bool = False
     repair_symlinks: bool = False
-    repair_interval: float = 6  # hours
+    repair_interval: float = 6 # hours
+    symlink_retries: int = Field(default=6, ge=0, le=50)
 
 
 # Content Services
@@ -266,7 +267,7 @@ class ScraperModel(Observable):
     after_10: float = 24
     parse_debug: bool = False
     enable_aliases: bool = True
-    bucket_limit: int = Field(default=5, ge=0, le=20)
+    bucket_limit: int = Field(default=5, ge=0, le=50)
     max_failed_attempts: int = Field(default=0, ge=0, le=10)
     dubbed_anime_only: bool = False
     torrentio: TorrentioConfig = TorrentioConfig()
